@@ -45,4 +45,6 @@ JAR="$HERE/teamsreader-java.jar"
 
 # Keep memory modest on the 512MB Pi Zero 2 W.
 # Pass through any CLI args (e.g. --list-chats, the conversation-discovery mode).
-exec java -Xmx192m -jar "$JAR" "$@"
+# Mirror this run's output to lastrun.log (overwrite) so the Pi dashboard's
+# Calendar page shows the latest run - manual, cron and button runs alike.
+java -Xmx192m -jar "$JAR" "$@" 2>&1 | tee "$HERE/lastrun.log"
