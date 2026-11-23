@@ -35,6 +35,7 @@ public final class Config {
     public final boolean extractEvents = true;
     public final boolean pushCalendar  = true;
     public final boolean readEmail     = true;
+    public final boolean readQParents  = true;   // QParents consent-request events (needs qp_login.py + qparents_cred.dat on the Pi)
     public final boolean logToTeams    = false;  // run log now shown on the Pi dashboard (Calendar page); flip to true to also post it to the Teams notes-to-self stream
 
     // ---- windows / caps -----------------------------------------------------
@@ -60,6 +61,7 @@ public final class Config {
     public final Path cookieMsOnlineFile; // teams_cookie_msonline.dat - login.microsoftonline.com cookie
     public final Path cookieLiveFile;     // teams_cookie_live.dat - login.live.com cookie
     public final Path loginHintFile;      // teams_login_hint.dat - account email for login_hint
+    public final Path qparentsSession;    // qparents_session.dat - Cookie header written by qp_login.py
 
     // ---- Teams (MSA consumer) constants, straight from the HAR ---------------
     public final String tenant   = "9188040d-6c67-4c5b-b112-36a304b66dad";
@@ -129,6 +131,7 @@ public final class Config {
         this.cookieMsOnlineFile = home.resolve("teams_cookie_msonline.dat");
         this.cookieLiveFile     = home.resolve("teams_cookie_live.dat");
         this.loginHintFile      = home.resolve("teams_login_hint.dat");
+        this.qparentsSession    = home.resolve("qparents_session.dat");
     }
 
     /** The account email used as login_hint on the silent authorize request, so

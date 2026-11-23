@@ -15,6 +15,7 @@ public final class Event {
     public final String dedupeKey;
     public final String sourceRef;  // Gemini's [ref N] of the deciding message ("" / "null" if none)
     public String sourceUrl = "";   // resolved Teams deep link (set by Main), "" if not from a Teams message
+    public String description = ""; // explicit description (set by non-Teams sources, e.g. QParents); "" uses the default
 
     public Event(JSONObject o) {
         this.title      = str(o, "title");

@@ -92,9 +92,14 @@ public final class CalendarClient {
 
             // Description: the readable text/summary from Teams (as before). The deep
             // link now lives in the dedicated URL field (below), not in here.
-            String desc = "From Teams COMMUNICATION!!!";
-            if (!e.confidence.isEmpty()) desc += " (confidence " + e.confidence + ")";
-            if (!e.evidence.isEmpty())   desc += " - " + e.evidence;
+            String desc;
+            if (!e.description.isEmpty()) {
+                desc = e.description;                       // explicit (e.g. QParents consent)
+            } else {
+                desc = "From Teams COMMUNICATION!!!";
+                if (!e.confidence.isEmpty()) desc += " (confidence " + e.confidence + ")";
+                if (!e.evidence.isEmpty())   desc += " - " + e.evidence;
+            }
             body.put("description", desc);
 
             // Deep link in Google's dedicated URL field ("source") - shows as a clickable

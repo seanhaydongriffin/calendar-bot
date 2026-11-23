@@ -97,6 +97,9 @@ public final class Main {
 
         extractEvents(threads, teamsOk);
 
+        // QParents consent-request events: definitive data, parsed directly (no Gemini).
+        collectQParents();
+
         if (teamsOk && cfg.logToTeams)
             teams.postMessage(cfg.logThread, runSummary);
 
@@ -264,6 +267,24 @@ public final class Main {
         for (Event e : events) sum.append("\n - ").append(e.title).append(e.hasStart() ? "  " + e.start : "");
         if (!calendar.summary.isEmpty()) sum.append("\n").append(calendar.summary);
         runSummary = sum.toString();
+    }
+
+    /**
+     * QParents consent-request events. The Python helper qp_login.py refreshes the
+     * session (WebKit2 handles reCAPTCHA + MFA); QParentsClient then reads actioned
+     * consents and crafts calendar events. Pushed independently of the Gemini path.
+     */
+    private void collectQParents() {
+        if (!cfg.readQParents) return;
+        QParentsClient qp = new QParentsClient(cfg, gemini);
+        List<Event> events = qp.collect();
+        String line = qp.summary;
+        if (cfg.pushCalendar && !events.isEmpty()) {
+            calendar.push(events);
+            if (!calendar.summary.isEmpty()) line += "  " + calendar.summary;
+        }
+        if (!line.isEmpty())
+            runSummary = runSummary.isEmpty() ? line : runSummary + "\n" + line;
     }
 
     /** Build the "copy link" deep link for a Teams message (thread id + message id). */
